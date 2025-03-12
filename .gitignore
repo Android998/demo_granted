@@ -1,0 +1,8 @@
+.env
+.venv
+index/index_recetas/chroma.sqlite3
+__pycache__/langchain_utils.cpython-311.pyc
+index/index_recetas/dc09803b-9fa8-4971-a193-aa33a80cd4bf/header.bin
+index/index_recetas/dc09803b-9fa8-4971-a193-aa33a80cd4bf/data_level0.bin
+index/index_recetas/dc09803b-9fa8-4971-a193-aa33a80cd4bf/length.bin
+index/index_recetas/dc09803b-9fa8-4971-a193-aa33a80cd4bf/link_lists.bin
