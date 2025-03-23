@@ -168,7 +168,7 @@ def invoke_chain(question, messages, model_name="llama3-70b-8192", temperature=0
 
 
 
-def get_docs_for_question(question, k=3):
+def get_docs_for_question(question, k=5):
     """
     Devuelve los 'k' documentos más relevantes 
     usando vectorstore.similarity_search(question).
