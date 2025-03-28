@@ -2,6 +2,10 @@ from dotenv import load_dotenv
 from langchain_community.embeddings import FastEmbedEmbeddings
 from langchain_chroma import Chroma
 import os
+import re
+from langchain.llms import Llama
+from langchain.prompts import PromptTemplate
+from langchain.chains import LLMChain
 from langchain_community.document_loaders import TextLoader, PyPDFLoader, Docx2txtLoader
 from langchain_text_splitters import CharacterTextSplitter
 
@@ -17,6 +21,28 @@ text_splitter = CharacterTextSplitter(
     chunk_size=2000,
     chunk_overlap=0
 )
+
+def clean_text(text):
+    """
+    Limpia el texto eliminando encabezados, pies de página, índices y otros elementos repetitivos.
+    """
+    # Lista de patrones a eliminar (puedes ampliarla según necesites)
+    patterns = [
+        r'BOLETÍN OFICIAL DEL ESTADO',
+        r'Núm\.\s*\d+',
+        r'Pág\.\s*\d+',
+        r'Sec\.\s*\w+'
+    ]
+    
+    # Elimina cada patrón del texto
+    for pattern in patterns:
+        text = re.sub(pattern, '', text, flags=re.IGNORECASE)
+    
+    # Elimina líneas vacías y reduce espacios múltiples
+    text = re.sub(r'\n\s*\n', '\n', text)
+    text = re.sub(r'\s+', ' ', text)
+    
+    return text.strip()
 
 # Inicializa una lista vacía para almacenar los documentos
 all_docs = []
@@ -40,9 +66,10 @@ for filename in os.listdir(DIRECTORY):
             
             # Aplica el text_splitter al documento
             docs = loader.load_and_split(text_splitter=text_splitter)
+            cleaned_docs = [clean_text(doc.page_content) for doc in docs]
             
             # Agrega los documentos cargados a la lista de todos los documentos
-            all_docs.extend(docs)
+            all_docs.extend(cleaned_docs)
             
             # Imprime información sobre los documentos cargados
             print(f"\nArchivo: {file_path}\n")
