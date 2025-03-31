@@ -177,7 +177,7 @@ def get_docs_for_question(question, k=5):
     return results
 
 
-def limit_history(messages, max_messages=6):
+def limit_history(messages, max_messages=3):
     # Si el historial es más corto o igual al máximo permitido,
     # no necesitamos recortar.
     if len(messages) <= max_messages:
